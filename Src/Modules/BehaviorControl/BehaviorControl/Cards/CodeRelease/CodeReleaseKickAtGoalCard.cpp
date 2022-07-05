@@ -16,21 +16,19 @@
 
 CARD(CodeReleaseKickAtGoalCard,
 {,
-  CALLS(Activity),
-  CALLS(GoToBallAndKick),
-  CALLS(LookForward),
-  CALLS(Stand),
-  CALLS(WalkAtRelativeSpeed),
-  REQUIRES(FieldBall),
-  REQUIRES(FieldDimensions),
-  REQUIRES(RobotPose),
-  DEFINES_PARAMETERS(
-  {,
+    CALLS(Activity),
+    CALLS(LookForward),
+    CALLS(Stand),
+    CALLS(Say),
+    CALLS(WalkAtRelativeSpeed),
+    REQUIRES(RobotPose),
+    DEFINES_PARAMETERS(
+    {,
     (float)(0.8f) walkSpeed,
     (int)(1000) initialWaitTime,
-    (int)(7000) ballNotSeenTimeout,
-  }),
+    }),
 });
+
 
 class CodeReleaseKickAtGoalCard : public CodeReleaseKickAtGoalCardBase
 {
@@ -53,50 +51,33 @@ class CodeReleaseKickAtGoalCard : public CodeReleaseKickAtGoalCardBase
       transition
       {
         if(state_time > initialWaitTime)
-          goto goToBallAndKick;
+          goto walkForward;
       }
 
       action
       {
+        theSaySkill("Success myown robocup code");
         theLookForwardSkill();
         theStandSkill();
       }
     }
 
-    state(goToBallAndKick)
+    state(walkForward)
     {
       transition
       {
-        if(!theFieldBall.ballWasSeen(ballNotSeenTimeout))
-          goto searchForBall;
+        if(state_time+1000000 < initialWaitTime)
+          goto start;
       }
-
       action
       {
-        theGoToBallAndKickSkill(calcAngleToGoal(), KickInfo::walkForwardsLeft);
-      }
-    }
-
-    state(searchForBall)
-    {
-      transition
-      {
-        if(theFieldBall.ballWasSeen())
-          goto goToBallAndKick;
-      }
-
-      action
-      {
+        theSaySkill("Success walk status");
         theLookForwardSkill();
-        theWalkAtRelativeSpeedSkill(Pose2f(walkSpeed, 0.f, 0.f));
+        theWalkAtRelativeSpeedSkill(Pose2f(0.f,0.8f,0.f));
       }
     }
-  }
-
-  Angle calcAngleToGoal() const
-  {
-    return (theRobotPose.inversePose * Vector2f(theFieldDimensions.xPosOpponentGroundLine, 0.f)).angle();
   }
 };
+
 
 MAKE_CARD(CodeReleaseKickAtGoalCard);
