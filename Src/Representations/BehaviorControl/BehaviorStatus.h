@@ -31,6 +31,8 @@ STREAMABLE(BehaviorStatus, COMMA public BHumanCompressedMessageParticle<Behavior
     codeReleaseKickAtGoal,
     codeReleasePositionForKickOff,
 
+    codeReleaseOneTwo,
+
     calibrationFinished,
   });
 

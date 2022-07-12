@@ -14,6 +14,9 @@
 #include "Tools/BehaviorControl/Framework/Card/Card.h"
 #include "Tools/BehaviorControl/Framework/Card/Dealer.h"
 
+#include "Representations/Communication/RobotInfo.h"
+
+
 CARD(GameplayCard,
 {,
   CALLS(ArmContact),
@@ -25,6 +28,10 @@ CARD(GameplayCard,
   REQUIRES(OwnTeamInfo),
   REQUIRES(OpponentTeamInfo),
   REQUIRES(TeamBehaviorStatus),
+  REQUIRES(RobotInfo),
+
+
+
   LOADS_PARAMETERS(
   {,
     (DeckOfCards<CardRegistry>) ownKickoff,
@@ -34,6 +41,10 @@ CARD(GameplayCard,
     (DeckOfCards<CardRegistry>) normalPlay,
     (DeckOfCards<CardRegistry>) ownPenaltyKick,
     (DeckOfCards<CardRegistry>) opponentPenaltyKick,
+
+    (DeckOfCards<CardRegistry>) onePlay,
+
+
   }),
 });
 
@@ -121,8 +132,15 @@ class GameplayCard : public GameplayCardBase
       }
       else
       {
-        dealer.deal(normalPlay)->call();
-        setState("normalPlay");
+        if(theRobotInfo.number==1) {
+          dealer.deal(normalPlay)->call();
+          setState("normalPlay");
+          }
+        else {
+          dealer.deal(onePlay)->call();
+          setState("normalPlay");
+
+        }
 
         #ifdef TARGET_ROBOT
           if(stateTime <= 11000)

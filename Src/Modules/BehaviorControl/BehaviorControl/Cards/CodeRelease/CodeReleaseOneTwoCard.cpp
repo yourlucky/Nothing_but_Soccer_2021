@@ -1,5 +1,5 @@
 /**
- * @file CodeReleaseKickAtGoalCard.cpp
+ * @file CodeReleaseOneTwoCard.cpp
  *
  * This file implements a basic striker behavior for the code release.
  *
@@ -16,7 +16,7 @@
 
 #include "Representations/Communication/RobotInfo.h"
 
-CARD(CodeReleaseKickAtGoalCard,
+CARD(CodeReleaseOneTwoCard,
 {,
   CALLS(Activity),
   CALLS(GoToBallAndKick),
@@ -37,7 +37,7 @@ CARD(CodeReleaseKickAtGoalCard,
   }),
 });
 
-class CodeReleaseKickAtGoalCard : public CodeReleaseKickAtGoalCardBase
+class CodeReleaseOneTwoCard : public CodeReleaseOneTwoCardBase
 {
   bool preconditions() const override
   {
@@ -51,14 +51,13 @@ class CodeReleaseKickAtGoalCard : public CodeReleaseKickAtGoalCardBase
 
   option
   {
-    //theActivitySkill(BehaviorStatus::codeReleaseKickAtGoal);
-
+    //theActivitySkill(BehaviorStatus::CodeReleaseOneTwoCard);
     initial_state(start)
     {
       transition
       {
         if(state_time > initialWaitTime)
-          goto goToBallAndKick;
+          goto moveTurn;
       }
 
       action
@@ -68,41 +67,16 @@ class CodeReleaseKickAtGoalCard : public CodeReleaseKickAtGoalCardBase
       }
     }
 
-    state(goToBallAndKick)
+    state(moveTurn)
     {
-      transition
-      {
-        if(!theFieldBall.ballWasSeen(ballNotSeenTimeout))
-          goto searchForBall;
-      }
-
+      
       action
       {
-        theGoToBallAndKickSkill(calcAngleToGoal(), KickInfo::walkForwardsLeft);
-      }
-    }
-
-    state(searchForBall)
-    {
-      transition
-      {
-        if(theFieldBall.ballWasSeen())
-          goto goToBallAndKick;
-      }
-
-      action
-      {
-        theLookForwardSkill();
-        theWalkAtRelativeSpeedSkill(Pose2f(walkSpeed, 0.f, 0.f));
+        theWalkAtRelativeSpeedSkill(Pose2f(0.f,walkSpeed,0.f));
+        theSaySkill("hahahaha");
       }
     }
   }
-
-  Angle calcAngleToGoal() const
-  {
-    return (theRobotPose.inversePose * Vector2f(theFieldDimensions.xPosOpponentGroundLine, 0.f)).angle();
-  }
-
 };
 
-MAKE_CARD(CodeReleaseKickAtGoalCard);
+MAKE_CARD(CodeReleaseOneTwoCard);
