@@ -33,3 +33,5 @@ Thumbs.db
 /Util/Buildchain/macOS/include
 /Util/Buildchain/macOS/lib
 /Util/WSL
+/Config/Scenarios/Default/BehaviorControl/gameplayCard.cfg
+
