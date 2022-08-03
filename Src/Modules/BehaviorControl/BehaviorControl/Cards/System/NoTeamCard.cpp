@@ -35,6 +35,16 @@ class NoTeamCard : public NoTeamCardBase
     theTimeToReachBallSkill(TimeToReachBall());
     theTeammateRolesSkill(TeammateRoles());
     theRoleSkill(PlayerRole());
+
+    /*
+    Role role;
+    role.isGoalkeeper = false;
+    role.playBall = false;
+    role.supporterIndex = -1;
+    role.numOfActiveSupporters = 0;
+    theRoleSkill(role);
+    */
+
   }
 };
 
