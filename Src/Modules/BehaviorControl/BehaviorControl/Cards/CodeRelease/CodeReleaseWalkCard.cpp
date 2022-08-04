@@ -19,6 +19,8 @@
 
 #include "Representations/BehaviorControl/PlayerRole.h"
 
+#include "Tools/Module/Blackboard.h"
+
 #include <iostream>
 #include <typeinfo>
 
@@ -42,8 +44,7 @@ CARD(CodeReleaseWalkCard,
     {,
     (float)(0.8f) walkSpeed,
     (int)(1000) initialWaitTime,
-    (PlayerRole::RoleType)(PlayerRole::goalkeeper) g_role,
-
+    
     }),
 });
 
@@ -71,9 +72,11 @@ class CodeReleaseWalkCard : public CodeReleaseWalkCardBase
         if(state_time > initialWaitTime)
           goto walkForward;
 
+        const TeamBehaviorStatus &theTeamBehaviorStatus = static_cast<const TeamBehaviorStatus &>(Blackboard::getInstance()["TeamBehaviorStatus"]);
+
         
         if(theRobotInfo.number==1) {
-            theTeamBehaviorStatus.role.role= g_role;
+            theTeamBehaviorStatus.role.role= PlayerRole::none;
             std::cout<<typeid(theTeamBehaviorStatus.role.role).name()<<std::endl;
             }
   
