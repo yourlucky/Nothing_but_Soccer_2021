@@ -8,6 +8,9 @@
 
 #include "Representations/BehaviorControl/TeamSkills.h"
 #include "Tools/BehaviorControl/Framework/Card/TeamCard.h"
+#include "Representations/Communication/TeamData.h" 
+
+#include <iostream>
 
 TEAM_CARD(NoTeamCard,
 {,
@@ -15,6 +18,10 @@ TEAM_CARD(NoTeamCard,
   CALLS(TeamActivity),
   CALLS(TeammateRoles),
   CALLS(TimeToReachBall),
+
+  //REQUIRES(TeamBehaviorStatus),
+
+
 });
 
 class NoTeamCard : public NoTeamCardBase
@@ -34,9 +41,18 @@ class NoTeamCard : public NoTeamCardBase
     theTeamActivitySkill(TeamBehaviorStatus::noTeam);
     theTimeToReachBallSkill(TimeToReachBall());
     theTeammateRolesSkill(TeammateRoles());
+
+    //theTeamBehaviorStatus.role = goalkeeper;
+
+    
     theRoleSkill(PlayerRole());
 
-    /*
+    
+    //std::cout<<theTeamBehaviorStatus.role.role<<std::endl;
+    //std::cout<<"hi"<<std::endl;
+    //print(PlayerRole.role);
+
+   /* 
     Role role;
     role.isGoalkeeper = false;
     role.playBall = false;

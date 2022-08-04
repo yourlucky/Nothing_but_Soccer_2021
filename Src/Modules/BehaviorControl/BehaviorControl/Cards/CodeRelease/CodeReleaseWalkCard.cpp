@@ -15,8 +15,12 @@
 #include "Tools/Math/BHMath.h"
 
 #include "Representations/Communication/TeamData.h" //This makes to use TeamBehaviorStatus
+#include "Representations/Communication/RobotInfo.h"
 
+#include "Representations/BehaviorControl/PlayerRole.h"
 
+#include <iostream>
+#include <typeinfo>
 
 CARD(CodeReleaseWalkCard,
 {,
@@ -29,7 +33,8 @@ CARD(CodeReleaseWalkCard,
     REQUIRES(RobotPose),
 
     REQUIRES(TeamBehaviorStatus),
-    //REQUIRES(TeamData),
+    REQUIRES(TeamData),
+    REQUIRES(RobotInfo),
 
 
 
@@ -37,6 +42,8 @@ CARD(CodeReleaseWalkCard,
     {,
     (float)(0.8f) walkSpeed,
     (int)(1000) initialWaitTime,
+    (PlayerRole::RoleType)(PlayerRole::goalkeeper) g_role,
+
     }),
 });
 
@@ -63,6 +70,13 @@ class CodeReleaseWalkCard : public CodeReleaseWalkCardBase
       {
         if(state_time > initialWaitTime)
           goto walkForward;
+
+        
+        if(theRobotInfo.number==1) {
+            theTeamBehaviorStatus.role.role= g_role;
+            std::cout<<typeid(theTeamBehaviorStatus.role.role).name()<<std::endl;
+            }
+  
       }
 
       action
